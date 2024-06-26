@@ -12,6 +12,10 @@ class HomePage extends StatelessWidget {
         lastDay: DateTime.utc(2030, 3, 14),
         focusedDay: DateTime.now(),
         locale: 'ja_JP',
+        headerStyle: const HeaderStyle(
+          formatButtonVisible: false,
+          titleCentered: true,
+        ),
       ),
     );
   }
