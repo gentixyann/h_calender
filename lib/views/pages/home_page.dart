@@ -25,6 +25,10 @@ class HomePage extends ConsumerWidget {
           formatButtonVisible: false,
           titleCentered: true,
         ),
+        calendarStyle: CalendarStyle(
+            todayTextStyle: TextStyle(
+          color: Colors.deepPurpleAccent,
+        )),
         onDaySelected: (selectedDay, focusedDay) {
           ref.read(selectedDateProvider.notifier).state = selectedDay;
           ref.read(focusedDateProvider.notifier).state = focusedDay;
