@@ -25,10 +25,22 @@ class HomePage extends ConsumerWidget {
           formatButtonVisible: false,
           titleCentered: true,
         ),
-        calendarStyle: CalendarStyle(
-            todayTextStyle: TextStyle(
-          color: Colors.deepPurpleAccent,
-        )),
+        calendarStyle: const CalendarStyle(
+          todayDecoration: BoxDecoration(
+            color: Colors.pink, // 今日の日付の背景色
+            shape: BoxShape.circle, // 形を丸く
+          ),
+          selectedDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blue, // 選択した日付の背景色
+          ),
+          todayTextStyle: TextStyle(
+            color: Colors.white, // 今日の日付の文字色
+          ),
+          selectedTextStyle: TextStyle(
+            color: Colors.white, // 選択した日付の文字色
+          ),
+        ),
         onDaySelected: (selectedDay, focusedDay) {
           ref.read(selectedDateProvider.notifier).state = selectedDay;
           ref.read(focusedDateProvider.notifier).state = focusedDay;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:h_calender/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:h_calender/theme.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
@@ -16,10 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: '性活カレンダー',
       routerConfig: router,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
     );
   }
 
