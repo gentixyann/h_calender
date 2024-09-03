@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:h_calender/models/calendar.dart';
+import 'package:h_calender/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDate = ref.watch(selectedDateProvider);
     final focusedDate = ref.watch(focusedDateProvider);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       body: TableCalendar(
@@ -25,19 +27,18 @@ class HomePage extends ConsumerWidget {
           formatButtonVisible: false,
           titleCentered: true,
         ),
-        calendarStyle: const CalendarStyle(
-          todayDecoration: BoxDecoration(
-            color: Colors.pink, // 今日の日付の背景色
+        calendarStyle: CalendarStyle(
+          todayDecoration: const BoxDecoration(
+            color: AppTheme.darkGray, // 今日の日付の背景色
             shape: BoxShape.circle, // 形を丸く
           ),
           selectedDecoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.blue, // 選択した日付の背景色
-          ),
-          todayTextStyle: TextStyle(
+              shape: BoxShape.circle, color: colorScheme.primary // 選択した日付の背景色
+              ),
+          todayTextStyle: const TextStyle(
             color: Colors.white, // 今日の日付の文字色
           ),
-          selectedTextStyle: TextStyle(
+          selectedTextStyle: const TextStyle(
             color: Colors.white, // 選択した日付の文字色
           ),
         ),
