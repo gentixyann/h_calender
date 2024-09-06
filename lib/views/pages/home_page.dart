@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:h_calender/models/calendar.dart';
+import 'package:h_calender/models/dayEvent.dart';
 import 'package:h_calender/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,6 +27,10 @@ class HomePage extends ConsumerWidget {
 class _TableCalendar extends ConsumerWidget {
   const _TableCalendar({super.key});
 
+  List<DayEvent> _getEventsForDay(DateTime day) {
+    return kEvents[day] ?? [];
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDate = ref.watch(selectedDateProvider);
@@ -41,6 +46,7 @@ class _TableCalendar extends ConsumerWidget {
         return isSameDay(selectedDate, day);
       },
       locale: 'ja_JP',
+      eventLoader: _getEventsForDay,
       headerStyle: const HeaderStyle(
         formatButtonVisible: false,
         titleCentered: true,
