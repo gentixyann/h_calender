@@ -25,7 +25,7 @@ class HomePage extends ConsumerWidget {
 }
 
 class _TableCalendar extends ConsumerWidget {
-  const _TableCalendar({super.key});
+  const _TableCalendar();
 
   List<DayEvent> _getEventsForDay(DateTime day) {
     return kEvents[day] ?? [];
@@ -57,19 +57,59 @@ class _TableCalendar extends ConsumerWidget {
           shape: BoxShape.circle, // 形を丸く
         ),
         selectedDecoration: BoxDecoration(
-            shape: BoxShape.circle, color: colorScheme.primary // 選択した日付の背景色
+            shape: BoxShape.circle, color: colorScheme.secondary // 選択した日付の背景色
             ),
         todayTextStyle: const TextStyle(
           color: Colors.white, // 今日の日付の文字色
         ),
         selectedTextStyle: const TextStyle(
-          color: Colors.white, // 選択した日付の文字色
+          color: Colors.black, // 選択した日付の文字色
         ),
       ),
       onDaySelected: (selectedDay, focusedDay) {
         ref.read(selectedDateProvider.notifier).state = selectedDay;
         ref.read(focusedDateProvider.notifier).state = focusedDay;
       },
+      // calendarBuilders: CalendarBuilders(
+      //   markerBuilder: (context, date, event) {
+      //     if (event.isNotEmpty) {
+      //       return Container(
+      //         width: 35,
+      //         decoration: BoxDecoration(
+      //           color: colorScheme.primary.withOpacity(0.4),
+      //           shape: BoxShape.circle,
+      //         ),
+      //       );
+      //     }
+      //     return null;
+      //   },
+      // ),
+      calendarBuilders: CalendarBuilders(
+        markerBuilder: (context, date, events) {
+          final colorScheme = Theme.of(context).colorScheme;
+
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              // 日付の背景色をイベントがある場合に変更
+              Container(
+                width: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: events.isNotEmpty ? colorScheme.primary : null,
+                ),
+              ),
+              // 日付のテキスト
+              Center(
+                child: Text(
+                  date.day.toString(),
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

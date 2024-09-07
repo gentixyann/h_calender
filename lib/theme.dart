@@ -9,6 +9,7 @@ class AppTheme {
       brightness: Brightness.light,
       seedColor: const Color(0xFFF5BFC0),
       primary: const Color(0xFFF5BFC0),
+      secondary: const Color(0xFFFFFEC7),
     ),
     useMaterial3: true,
   );
