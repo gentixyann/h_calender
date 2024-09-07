@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:h_calender/models/calendar.dart';
 import 'package:h_calender/models/dayEvent.dart';
 import 'package:h_calender/theme.dart';
+import 'package:h_calender/utils/format.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -120,6 +121,7 @@ class _DayPageButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedDate = ref.watch(selectedDateProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     return FilledButton(
@@ -132,6 +134,7 @@ class _DayPageButton extends ConsumerWidget {
       ),
       child: const Text(
         '記録する',
+        // formatDate(selectedDate),
         style: TextStyle(
           color: Colors.black,
         ),

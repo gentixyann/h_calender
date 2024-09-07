@@ -21,7 +21,6 @@ final _kEventSource = {
 }..addAll({
     kToday: [
       const DayEvent('Today\'s Event 1'),
-      const DayEvent('Today\'s Event 2'),
     ],
   });
 
