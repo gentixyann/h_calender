@@ -70,46 +70,47 @@ class _TableCalendar extends ConsumerWidget {
         ref.read(selectedDateProvider.notifier).state = selectedDay;
         ref.read(focusedDateProvider.notifier).state = focusedDay;
       },
-      // calendarBuilders: CalendarBuilders(
-      //   markerBuilder: (context, date, event) {
-      //     if (event.isNotEmpty) {
-      //       return Container(
-      //         width: 35,
-      //         decoration: BoxDecoration(
-      //           color: colorScheme.primary.withOpacity(0.4),
-      //           shape: BoxShape.circle,
-      //         ),
-      //       );
-      //     }
-      //     return null;
-      //   },
-      // ),
       calendarBuilders: CalendarBuilders(
         markerBuilder: (context, date, events) {
-          final colorScheme = Theme.of(context).colorScheme;
-
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              // 日付の背景色をイベントがある場合に変更
-              Container(
-                width: 35,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: events.isNotEmpty ? colorScheme.primary : null,
-                ),
-              ),
-              // 日付のテキスト
-              Center(
-                child: Text(
-                  date.day.toString(),
-                  style: const TextStyle(color: Colors.black),
-                ),
-              ),
-            ],
-          );
+          return _CalendarBuildersStack(date: date, events: events);
         },
       ),
+    );
+  }
+}
+
+class _CalendarBuildersStack extends StatelessWidget {
+  const _CalendarBuildersStack({
+    required this.events,
+    required this.date,
+  });
+
+  final List events;
+  final DateTime date;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // 日付の背景色をイベントがある場合に変更
+        Container(
+          width: 35,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: events.isNotEmpty ? colorScheme.primary : null,
+          ),
+        ),
+        // 日付のテキスト
+        Center(
+          child: Text(
+            date.day.toString(),
+            style: const TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
     );
   }
 }
