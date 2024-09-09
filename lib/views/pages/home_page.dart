@@ -29,7 +29,11 @@ class _TableCalendar extends ConsumerWidget {
   const _TableCalendar();
 
   List<DayEvent> _getEventsForDay(DateTime day) {
-    return kEvents[day] ?? [];
+    final events = kEvents[day];
+    if (events != null) {
+      return [events.first];
+    }
+    return [];
   }
 
   @override
@@ -37,6 +41,7 @@ class _TableCalendar extends ConsumerWidget {
     final selectedDate = ref.watch(selectedDateProvider);
     final focusedDate = ref.watch(focusedDateProvider);
     final colorScheme = Theme.of(context).colorScheme;
+    final events = ref.watch(_Providers.getEventsForDayProvider(selectedDate));
 
     return TableCalendar(
       firstDay: DateTime.utc(2010, 10, 16),
@@ -123,11 +128,14 @@ class _DayInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDate = ref.watch(selectedDateProvider);
     final colorScheme = Theme.of(context).colorScheme;
+    final events = ref.watch(_Providers.getEventsForDayProvider(selectedDate));
 
     return Column(
       children: [
         Center(
-          child: Text(formatDate(selectedDate)),
+          child: Text(events.isNotEmpty
+              ? events.first.title
+              : formatDate(selectedDate)),
         ),
         const SizedBox(
           height: 10,
@@ -151,3 +159,17 @@ class _DayInfo extends ConsumerWidget {
     );
   }
 }
+
+class HomeProviders {
+  @visibleForTesting
+  static final getEventsForDayProvider =
+      Provider.family<List<DayEvent>, DateTime>((ref, date) {
+    final events = kEvents[date];
+    if (events != null) {
+      return [events.first];
+    }
+    return [];
+  });
+}
+
+typedef _Providers = HomeProviders;

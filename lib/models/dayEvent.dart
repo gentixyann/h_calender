@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:h_calender/utils/format.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class DayEvent {
@@ -9,10 +10,29 @@ class DayEvent {
   String toString() => title;
 }
 
+// final kEvents = LinkedHashMap<DateTime, List<DayEvent>>(
+//   equals: isSameDay,
+//   hashCode: getHashCode,
+// )..addAll(_kEventSource);
+
 final kEvents = LinkedHashMap<DateTime, List<DayEvent>>(
   equals: isSameDay,
   hashCode: getHashCode,
-)..addAll(_kEventSource);
+)
+  ..addAll(_kEventSource)
+  ..addAll({
+    kToday: List.generate(
+      // ここでは、kToday に追加するイベント数を調整できます
+      5, // 例として5つのイベントを追加
+      (index) {
+        final eventDate =
+            DateTime.utc(kToday.year, kToday.month, kToday.day + index * 5);
+        return DayEvent(
+          '${formatDate(eventDate)} Event ${index + 1}', // イベントの日付を追加
+        );
+      },
+    ),
+  });
 
 final _kEventSource = {
   for (var item in List.generate(50, (index) => index))
