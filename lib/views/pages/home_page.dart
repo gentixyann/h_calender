@@ -18,7 +18,7 @@ class HomePage extends ConsumerWidget {
           SizedBox(
             height: 30,
           ),
-          _DayPageButton(),
+          _DayInfo(),
         ],
       ),
     );
@@ -116,29 +116,38 @@ class _CalendarBuildersStack extends StatelessWidget {
   }
 }
 
-class _DayPageButton extends ConsumerWidget {
-  const _DayPageButton();
+class _DayInfo extends ConsumerWidget {
+  const _DayInfo();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDate = ref.watch(selectedDateProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
-    return FilledButton(
-      onPressed: () {},
-      style: FilledButton.styleFrom(
-        backgroundColor: colorScheme.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+    return Column(
+      children: [
+        Center(
+          child: Text(formatDate(selectedDate)),
         ),
-      ),
-      child: const Text(
-        '記録する',
-        // formatDate(selectedDate),
-        style: TextStyle(
-          color: Colors.black,
+        const SizedBox(
+          height: 10,
         ),
-      ),
+        FilledButton(
+          onPressed: () {},
+          style: FilledButton.styleFrom(
+            backgroundColor: colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text(
+            '記録する',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
