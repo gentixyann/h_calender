@@ -5,6 +5,7 @@ import 'package:h_calender/theme.dart';
 import 'package:h_calender/utils/format.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -141,7 +142,9 @@ class _DayInfo extends ConsumerWidget {
           height: 10,
         ),
         FilledButton(
-          onPressed: () {},
+          onPressed: () {
+            context.push('/day');
+          },
           style: FilledButton.styleFrom(
             backgroundColor: colorScheme.primary,
             shape: RoundedRectangleBorder(
