@@ -15,3 +15,5 @@ final router = GoRouter(initialLocation: '/', routes: [
         ),
       ]),
 ]);
+
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
