@@ -177,3 +177,10 @@ class HomeProviders {
 }
 
 typedef _Providers = HomeProviders;
+
+// class HomeRoute extends GoRouteData {
+//   const HomeRoute();
+//   static final $parentNavigatorKey = rootNavigatorKey;
+//   @override
+//   Widget build(BuildContext context, GoRouterState state) => const HomePage();
+// }
