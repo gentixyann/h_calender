@@ -14,9 +14,9 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return _Scaffold(
         body: ListView(
-      children: [
-        const SizedBox(height: 60),
-        TextFormField(),
+      children: const [
+        SizedBox(height: 60),
+        _TextFields(),
       ],
     ));
   }
@@ -59,7 +59,7 @@ class _TextFields extends StatelessWidget {
       child: const Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          _PhoneNumberTextField(),
+          _EmailTextField(),
           _PasswordTextField(),
         ],
       ),
@@ -67,8 +67,8 @@ class _TextFields extends StatelessWidget {
   }
 }
 
-class _PhoneNumberTextField extends ConsumerWidget {
-  const _PhoneNumberTextField();
+class _EmailTextField extends ConsumerWidget {
+  const _EmailTextField();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
