@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:h_calender/views/pages/day_page.dart';
 import 'package:h_calender/views/pages/home_page.dart';
 import 'package:h_calender/views/pages/settings_page.dart';
+import 'package:h_calender/views/pages/sign_in_page.dart';
+import 'package:h_calender/views/pages/sign_up_page.dart';
 import 'package:h_calender/views/pages/widgets/main_scaffold.dart';
 
 part 'router.g.dart';
@@ -15,8 +17,18 @@ final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 final routerProvider = Provider((ref) {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: '/home',
-    routes: [...$appRoutes],
+    initialLocation: '/sign_up',
+    routes: [
+      ...$appRoutes,
+      GoRoute(
+        path: '/sign_in',
+        builder: (context, state) => const SignInPage(),
+      ),
+      GoRoute(
+        path: '/sign_up',
+        builder: (context, state) => const SignUpPage(),
+      ),
+    ],
   );
 });
 
