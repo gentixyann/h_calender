@@ -74,9 +74,7 @@ class _EmailTextField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TextFormField(
       decoration: const InputDecoration(
-        prefixIcon: Align(
-          widthFactor: 1.0,
-          heightFactor: 1.0,
+        prefixIcon: _PrefixIconContainer(
           child: Icon(Icons.email),
         ),
         prefixIconConstraints: _prefixIconConstraints,
@@ -100,10 +98,8 @@ class _PasswordTextField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TextFormField(
       decoration: const InputDecoration(
-        prefixIcon: Align(
-          widthFactor: 1.0,
-          heightFactor: 1.0,
-          child: Icon(Icons.password),
+        prefixIcon: _PrefixIconContainer(
+          child: Icon(Icons.key),
         ),
         prefixIconConstraints: _prefixIconConstraints,
         hintText: 'パスワード',
@@ -119,6 +115,21 @@ class _PasswordTextField extends ConsumerWidget {
       controller: ref.watch(passwordProvider),
       onFieldSubmitted: (text) => ref.watch(passwordProvider).clear(),
       validator: passwordValidator,
+    );
+  }
+}
+
+class _PrefixIconContainer extends StatelessWidget {
+  const _PrefixIconContainer({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(right: 8),
+      width: 32,
+      child: child,
     );
   }
 }
