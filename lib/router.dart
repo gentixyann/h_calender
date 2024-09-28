@@ -17,17 +17,17 @@ final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 final routerProvider = Provider((ref) {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: '/sign_up',
+    initialLocation: const SignUpRoute().location,
     routes: [
       ...$appRoutes,
-      GoRoute(
-        path: '/sign_in',
-        builder: (context, state) => const SignInPage(),
-      ),
-      GoRoute(
-        path: '/sign_up',
-        builder: (context, state) => const SignUpPage(),
-      ),
+      // GoRoute(
+      //   path: '/sign_in',
+      //   builder: (context, state) => const SignInPage(),
+      // ),
+      // GoRoute(
+      //   path: '/sign_up',
+      //   builder: (context, state) => const SignUpPage(),
+      // ),
     ],
   );
 });
@@ -79,4 +79,25 @@ class HomeShellBranchData extends StatefulShellBranchData {
 
 class SettingsShellBranchData extends StatefulShellBranchData {
   const SettingsShellBranchData();
+}
+
+// ルート定義
+@TypedGoRoute<SignInRoute>(path: '/sign_in')
+class SignInRoute extends GoRouteData {
+  const SignInRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SignInPage();
+  }
+}
+
+@TypedGoRoute<SignUpRoute>(path: '/sign_up')
+class SignUpRoute extends GoRouteData {
+  const SignUpRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SignUpPage();
+  }
 }

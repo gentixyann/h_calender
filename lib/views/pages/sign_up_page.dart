@@ -17,6 +17,10 @@ class SignUpPage extends StatelessWidget {
       children: const [
         SizedBox(height: 60),
         _TextFields(),
+        SizedBox(height: 20),
+        _SignUpButton(),
+        SizedBox(height: 20),
+        _SignInButton()
       ],
     ));
   }
@@ -61,6 +65,7 @@ class _TextFields extends StatelessWidget {
         children: [
           _EmailTextField(),
           _PasswordTextField(),
+          _NameTextField(),
         ],
       ),
     );
@@ -119,6 +124,27 @@ class _PasswordTextField extends ConsumerWidget {
   }
 }
 
+class _NameTextField extends ConsumerWidget {
+  const _NameTextField();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextFormField(
+      decoration: const InputDecoration(
+        prefixIcon: _PrefixIconContainer(
+          child: Icon(Icons.person),
+        ),
+        prefixIconConstraints: _prefixIconConstraints,
+        hintText: '名前',
+        filled: false,
+      ),
+      keyboardType: TextInputType.text,
+      controller: ref.watch(nameProvider),
+      validator: nameValidator,
+    );
+  }
+}
+
 class _PrefixIconContainer extends StatelessWidget {
   const _PrefixIconContainer({required this.child});
 
@@ -129,6 +155,64 @@ class _PrefixIconContainer extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(right: 8),
       width: 32,
+      child: child,
+    );
+  }
+}
+
+class _SignUpButton extends ConsumerWidget {
+  const _SignUpButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return _ButtonSizedBox(
+      child: FilledButton(
+        onPressed: () => print('サブミット'),
+        child: const FittedBox(
+          child: Text(
+            'アカウント作成',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SignInButton extends ConsumerWidget {
+  const _SignInButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return _ButtonSizedBox(
+      child: TextButton(
+        onPressed: () {
+          const SignInRoute().push<void>(context);
+        },
+        child: const FittedBox(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('ログインの場合はこちら',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ButtonSizedBox extends StatelessWidget {
+  const _ButtonSizedBox({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
       child: child,
     );
   }
