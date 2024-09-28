@@ -11,3 +11,10 @@ String? passwordValidator(String? value) {
   }
   return null;
 }
+
+String? nameValidator(String? value) {
+  if (value == null || value.isEmpty) {
+    return '名前を入力してください';
+  }
+  return null;
+}
