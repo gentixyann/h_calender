@@ -18,17 +18,7 @@ final routerProvider = Provider((ref) {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: const SignUpRoute().location,
-    routes: [
-      ...$appRoutes,
-      // GoRoute(
-      //   path: '/sign_in',
-      //   builder: (context, state) => const SignInPage(),
-      // ),
-      // GoRoute(
-      //   path: '/sign_up',
-      //   builder: (context, state) => const SignUpPage(),
-      // ),
-    ],
+    routes: [...$appRoutes],
   );
 });
 
