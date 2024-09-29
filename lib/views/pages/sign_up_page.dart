@@ -97,7 +97,7 @@ class _EmailTextField extends ConsumerWidget {
 class _PasswordTextField extends ConsumerWidget {
   const _PasswordTextField();
 
-  static const _providerKey = 'sign_in_password';
+  static const _providerKey = 'sign_up_password';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -187,7 +187,7 @@ class _SignInButton extends ConsumerWidget {
     return _ButtonSizedBox(
       child: TextButton(
         onPressed: () {
-          const SignInRoute().push<void>(context);
+          const SignInRoute().go(context);
         },
         child: const FittedBox(
           child: Column(
