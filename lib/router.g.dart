@@ -10,6 +10,7 @@ List<RouteBase> get $appRoutes => [
       $mainShellRouteData,
       $signInRoute,
       $signUpRoute,
+      $passwordResetRoute,
     ];
 
 RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
@@ -129,6 +130,29 @@ extension $SignUpRouteExtension on SignUpRoute {
 
   String get location => GoRouteData.$location(
         '/sign_up',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $passwordResetRoute => GoRouteData.$route(
+      path: '/password_reset',
+      factory: $PasswordResetRouteExtension._fromState,
+    );
+
+extension $PasswordResetRouteExtension on PasswordResetRoute {
+  static PasswordResetRoute _fromState(GoRouterState state) =>
+      const PasswordResetRoute();
+
+  String get location => GoRouteData.$location(
+        '/password_reset',
       );
 
   void go(BuildContext context) => context.go(location);

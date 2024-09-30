@@ -17,10 +17,11 @@ class SignInPage extends StatelessWidget {
       children: const [
         SizedBox(height: 60),
         _TextFields(),
-        SizedBox(height: 20),
         _SignInButton(),
-        SizedBox(height: 20),
-        _SignUpButton()
+        SizedBox(height: 10),
+        _SignUpButton(),
+        SizedBox(height: 10),
+        _PasswordResetButton(),
       ],
     ));
   }
@@ -180,6 +181,30 @@ class _SignUpButton extends ConsumerWidget {
   }
 }
 
+class _PasswordResetButton extends ConsumerWidget {
+  const _PasswordResetButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return _ButtonSizedBox(
+      child: TextButton(
+        onPressed: () {
+          const PasswordResetRoute().push(context);
+        },
+        child: const FittedBox(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('パスワードを忘れた人はこちら',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _ButtonSizedBox extends StatelessWidget {
   const _ButtonSizedBox({required this.child});
 
@@ -219,12 +244,3 @@ final passwordProvider = ChangeNotifierProvider.autoDispose(
 );
 
 final _formStateProvider = Provider.autoDispose((_) => GlobalKey<FormState>());
-
-class SignInRoute extends GoRouteData {
-  const SignInRoute();
-
-  static final $parentNavigatorKey = rootNavigatorKey;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const SignInPage();
-}

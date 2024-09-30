@@ -8,20 +8,13 @@ class PasswordResetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('パスワードリセット'),
+      ),
+      body: const Center(
         child: Text('パスワードリセット'),
       ),
     );
   }
-}
-
-class PasswordResetRoute extends GoRouteData {
-  const PasswordResetRoute();
-
-  static final $parentNavigatorKey = rootNavigatorKey;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const PasswordResetPage();
 }

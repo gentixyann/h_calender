@@ -247,12 +247,3 @@ final nameProvider = ChangeNotifierProvider.autoDispose(
 );
 
 final _formStateProvider = Provider.autoDispose((_) => GlobalKey<FormState>());
-
-class SignUpRoute extends GoRouteData {
-  const SignUpRoute();
-
-  static final $parentNavigatorKey = rootNavigatorKey;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const SignUpPage();
-}
