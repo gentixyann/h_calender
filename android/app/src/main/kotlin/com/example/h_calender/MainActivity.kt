@@ -1,4 +1,4 @@
-package com.example.h_calender
+package com.hCalendar.app
 
 import io.flutter.embedding.android.FlutterActivity
 
