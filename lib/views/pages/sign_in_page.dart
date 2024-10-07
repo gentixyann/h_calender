@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:h_calender/models/user.dart';
 import 'package:h_calender/router.dart';
 import 'package:h_calender/utils/validators.dart';
+import 'package:h_calender/utils/errors.dart';
+import 'package:h_calender/views/common/common_snackbar.dart';
 import 'package:h_calender/views/pages/widgets/password_text_field_utils.dart';
 import 'package:h_calender/views/pages/widgets/progress_filter.dart';
 import 'package:h_calender/views/pages/widgets/un_focus.dart';
@@ -146,7 +149,14 @@ class _SignInButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return _ButtonSizedBox(
       child: FilledButton(
-        onPressed: () => print('ログインしたよ'),
+        onPressed: () => ref.read(signInWithTextFieldValues)(
+            onSuccess: () => print('成功'),
+            onError: (error) {
+              CommonSnackBar.show(
+                context: context,
+                message: 'Sign in failed: $error',
+              );
+            }),
         child: const FittedBox(
           child: Text(
             'ログイン',
@@ -241,6 +251,23 @@ final emailProvider = ChangeNotifierProvider.autoDispose(
 @visibleForTesting
 final passwordProvider = ChangeNotifierProvider.autoDispose(
   (ref) => TextEditingController(),
+);
+
+@visibleForTesting
+final signInWithTextFieldValues = Provider.autoDispose(
+  (ref) => ({
+    required VoidCallback onSuccess,
+    required OnError onError,
+  }) async {
+    if (ref.read(validateProvider)() == false) return;
+    try {} catch (error) {
+      print(error);
+    }
+    await ref.read(signInProvider)(
+      email: ref.read(emailProvider).text,
+      password: ref.read(passwordProvider).text,
+    );
+  },
 );
 
 final _formStateProvider = Provider.autoDispose((_) => GlobalKey<FormState>());
