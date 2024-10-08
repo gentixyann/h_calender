@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:h_calender/models/user.dart';
 
 import 'package:h_calender/views/pages/day_page.dart';
 import 'package:h_calender/views/pages/home_page.dart';
@@ -16,9 +17,16 @@ final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider((ref) {
+  final authState = ref.watch(authStateChangesProvider);
+  String initialLocation = const SignUpRoute().location;
+  authState.whenData((user) {
+    initialLocation = user != null
+        ? const HomeRoute().location
+        : const SignUpRoute().location;
+  });
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: const SignUpRoute().location,
+    initialLocation: initialLocation,
     routes: [...$appRoutes],
   );
 });
