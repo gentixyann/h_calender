@@ -6,6 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
+// ログイン状態監視用
+final authStateChangesProvider = StreamProvider<User?>((ref) {
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
+  return firebaseAuth.authStateChanges();
+});
+
 final userProvider = StateProvider((ref) {
   final auth = ref.watch(firebaseAuthProvider);
   return auth.currentUser;
@@ -48,8 +54,13 @@ final signInProvider = Provider(
       } else {
         print('User is null');
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       print('Error during sign in: $e');
     }
   },
 );
+
+final signOutProvider = Provider((ref) => () async {
+      final auth = ref.watch(firebaseAuthProvider);
+      await auth.signOut();
+    });
