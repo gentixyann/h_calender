@@ -6,6 +6,7 @@ import 'package:h_calender/router.dart';
 import 'package:h_calender/utils/validators.dart';
 import 'package:h_calender/utils/errors.dart';
 import 'package:h_calender/views/common/common_snackbar.dart';
+import 'package:h_calender/views/pages/home_page.dart';
 import 'package:h_calender/views/pages/widgets/password_text_field_utils.dart';
 import 'package:h_calender/views/pages/widgets/progress_filter.dart';
 import 'package:h_calender/views/pages/widgets/un_focus.dart';
@@ -42,7 +43,7 @@ class _Scaffold extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: ProgressFilter(
-              isInProgress: ref.watch(_isInProgressProvider),
+              isInProgress: ref.watch(_Providers._isInProgressProvider),
               child: Form(
                 key: ref.watch(_formStateProvider),
                 child: body,
@@ -90,7 +91,7 @@ class _EmailTextField extends ConsumerWidget {
         filled: false,
       ),
       keyboardType: TextInputType.emailAddress,
-      controller: ref.watch(emailProvider),
+      controller: ref.watch(_Providers.emailProvider),
       textInputAction: TextInputAction.next,
       validator: emailValidator,
     );
@@ -120,8 +121,9 @@ class _PasswordTextField extends ConsumerWidget {
         PasswordTextFieldProviders.obscureFamily(_providerKey),
       ),
       keyboardType: TextInputType.visiblePassword,
-      controller: ref.watch(passwordProvider),
-      onFieldSubmitted: (text) => ref.watch(passwordProvider).clear(),
+      controller: ref.watch(_Providers.passwordProvider),
+      onFieldSubmitted: (text) =>
+          ref.watch(_Providers.passwordProvider).clear(),
       validator: passwordValidator,
     );
   }
@@ -149,14 +151,26 @@ class _SignInButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return _ButtonSizedBox(
       child: FilledButton(
-        onPressed: () => ref.read(signInWithTextFieldValues)(
-            onSuccess: () => print('成功'),
+        onPressed: () async {
+          // ログイン処理開始、ローディングを表示
+          ref.read(_Providers._isInProgressProvider.notifier).state = true;
+
+          await ref.read(_Providers.signInWithTextFieldValues)(
+            onSuccess: () {
+              // ログイン成功、ローディングを解除して画面遷移
+              ref.read(_Providers._isInProgressProvider.notifier).state = false;
+              const HomeRoute().go(context);
+            },
             onError: (error) {
+              // ログイン失敗、ローディングを解除してエラーメッセージを表示
+              ref.read(_Providers._isInProgressProvider.notifier).state = false;
               CommonSnackBar.show(
                 context: context,
                 message: 'Sign in failed: $error',
               );
-            }),
+            },
+          );
+        },
         child: const FittedBox(
           child: Text(
             'ログイン',
@@ -182,7 +196,11 @@ class _SignUpButton extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('初めて使う人はこちら', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('初めて使う人はこちら',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  )),
             ],
           ),
         ),
@@ -206,7 +224,10 @@ class _PasswordResetButton extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('パスワードを忘れた人はこちら',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  )),
             ],
           ),
         ),
@@ -230,44 +251,48 @@ class _ButtonSizedBox extends StatelessWidget {
   }
 }
 
-const _prefixIconConstraints = BoxConstraints(minWidth: 0);
+class SignInProviders {
+  static final _isInProgressProvider = StateProvider.autoDispose((ref) {
+    return false;
+  });
 
-final _isInProgressProvider = StateProvider.autoDispose((ref) {
-  return false;
-});
+  @visibleForTesting
+  static final validateProvider = Provider.autoDispose(
+    (ref) => () {
+      return ref.read(_formStateProvider).currentState?.validate();
+    },
+  );
 
-@visibleForTesting
-final validateProvider = Provider.autoDispose(
-  (ref) => () {
-    return ref.read(_formStateProvider).currentState?.validate();
-  },
-);
+  @visibleForTesting
+  static final emailProvider = ChangeNotifierProvider.autoDispose(
+    (ref) => TextEditingController(),
+  );
 
-@visibleForTesting
-final emailProvider = ChangeNotifierProvider.autoDispose(
-  (ref) => TextEditingController(),
-);
+  @visibleForTesting
+  static final passwordProvider = ChangeNotifierProvider.autoDispose(
+    (ref) => TextEditingController(),
+  );
 
-@visibleForTesting
-final passwordProvider = ChangeNotifierProvider.autoDispose(
-  (ref) => TextEditingController(),
-);
-
-@visibleForTesting
-final signInWithTextFieldValues = Provider.autoDispose(
-  (ref) => ({
-    required VoidCallback onSuccess,
-    required OnError onError,
-  }) async {
-    if (ref.read(validateProvider)() == false) return;
-    try {} catch (error) {
-      print(error);
-    }
-    await ref.read(signInProvider)(
-      email: ref.read(emailProvider).text,
-      password: ref.read(passwordProvider).text,
-    );
-  },
-);
+  @visibleForTesting
+  static final signInWithTextFieldValues = Provider.autoDispose(
+    (ref) => ({
+      required VoidCallback onSuccess,
+      required OnError onError,
+    }) async {
+      if (ref.read(validateProvider)() == false) return;
+      try {
+        await ref.read(signInProvider)(
+          email: ref.read(emailProvider).text,
+          password: ref.read(passwordProvider).text,
+        );
+        onSuccess();
+      } catch (error) {
+        print(error);
+      }
+    },
+  );
+}
 
 final _formStateProvider = Provider.autoDispose((_) => GlobalKey<FormState>());
+const _prefixIconConstraints = BoxConstraints(minWidth: 0);
+typedef _Providers = SignInProviders;

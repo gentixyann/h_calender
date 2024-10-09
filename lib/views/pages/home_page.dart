@@ -15,14 +15,16 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const Scaffold(
-      body: Column(
-        children: [
-          _TableCalendar(),
-          SizedBox(
-            height: 30,
-          ),
-          _DayInfo(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _TableCalendar(),
+            SizedBox(
+              height: 30,
+            ),
+            _DayInfo(),
+          ],
+        ),
       ),
     );
   }
