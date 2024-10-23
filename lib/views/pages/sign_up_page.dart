@@ -194,7 +194,10 @@ class _SignInButton extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('ログインの場合はこちら',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  )),
             ],
           ),
         ),
