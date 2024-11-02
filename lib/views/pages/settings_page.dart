@@ -17,9 +17,40 @@ class SettingsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           children: const [
             SizedBox(height: 24),
+            _UserInfo(),
+            SizedBox(height: 24),
             _SignOutButton(),
           ],
         ));
+  }
+}
+
+// ユーザー情報表示ウィジェット
+class _UserInfo extends ConsumerWidget {
+  const _UserInfo();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // ユーザー情報をauthStateChangesProviderから取得
+    final userAsyncValue = ref.watch(authStateChangesProvider);
+
+    return userAsyncValue.when(
+      data: (user) {
+        if (user == null) {
+          return const Text('ログインしていません');
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('UID: ${user.uid}'),
+            Text('Email: ${user.email}'),
+            Text('Display Name: ${user.displayName ?? "未設定"}'),
+          ],
+        );
+      },
+      loading: () => const CircularProgressIndicator(),
+      error: (error, stack) => Text('エラーが発生しました: $error'),
+    );
   }
 }
 
