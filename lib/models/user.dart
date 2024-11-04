@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-// firebaseAuthのインスタンス
-final firebaseAuthProvider =
-    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
+import 'package:h_calender/models/firebase.dart';
 
 // ログイン状態監視用
 final authStateChangesProvider = StreamProvider<User?>((ref) {
