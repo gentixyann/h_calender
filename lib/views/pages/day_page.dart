@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:h_calender/models/calendar.dart';
+import 'package:h_calender/models/user.dart';
 import 'package:h_calender/router.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:h_calender/utils/errors.dart';
 import 'package:h_calender/views/pages/widgets/un_focus.dart';
 
 class DayPage extends ConsumerWidget {
@@ -75,6 +78,42 @@ class _SubmitButton extends ConsumerWidget {
       ),
     );
   }
+}
+
+class DayProviders {
+  static final _isInProgressProvider = StateProvider.autoDispose((ref) {
+    return false;
+  });
+
+  @visibleForTesting
+  static final titleProvider = ChangeNotifierProvider.autoDispose(
+    (ref) => TextEditingController(),
+  );
+
+  @visibleForTesting
+  static final memoProvider = ChangeNotifierProvider.autoDispose(
+    (ref) => TextEditingController(),
+  );
+
+  @visibleForTesting
+  static final dayEventValues = Provider.autoDispose((ref) => ({
+        required VoidCallback onSuccess,
+        required OnError onError,
+      }) async {
+        try {
+          final user = ref.watch(userProvider);
+          if (user == null || user.uid.isEmpty) {
+            throw Exception('User not logged in or UID is null.');
+          }
+          await ref.watch(addEventProvider)(
+            uid: user.uid,
+            title: ref.watch(titleProvider).text,
+            memo: ref.watch(memoProvider).text,
+          );
+        } catch (error) {
+          print(error);
+        }
+      });
 }
 
 class DayRoute extends GoRouteData {
